@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val api: TabNewsApi) : ViewModel() {
+class RelevantsViewModel @Inject constructor(private val api: TabNewsApi) : ViewModel() {
     private var _state = MutableStateFlow(State())
     private val state: StateFlow<State> = _state
 
