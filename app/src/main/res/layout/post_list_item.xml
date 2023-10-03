@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/post_container"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -10,7 +10,7 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/post_position"
+        android:id="@+id/position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -25,7 +25,7 @@
         android:layout_marginStart="8dp"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/post_position"
+        app:layout_constraintStart_toEndOf="@id/position"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -37,27 +37,19 @@
         app:layout_constraintTop_toBottomOf="@id/post_title">
 
         <TextView
-            android:id="@+id/post_tabcoins"
+            android:id="@+id/tabcoins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/post_comments"
+            android:id="@+id/comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/post_author"
+            android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/post_published_at"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text=" · 15 horas atrás" />
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

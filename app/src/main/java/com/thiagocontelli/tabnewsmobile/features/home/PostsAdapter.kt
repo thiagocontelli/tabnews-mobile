@@ -1,10 +1,11 @@
-package com.thiagocontelli.tabnewsmobile
+package com.thiagocontelli.tabnewsmobile.features.home
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thiagocontelli.tabnewsmobile.databinding.PostListItemBinding
+import com.thiagocontelli.tabnewsmobile.models.Post
 
 class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
     private var posts: List<Post> = emptyList()
@@ -27,11 +28,14 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PostsViewHolder, position: Int) {
         val binding = holder.binding
-        binding.postPosition.text = "${position + 1}."
-        binding.postTitle.text = posts[position].title
-        binding.postTabcoins.text = "${posts[position].tabCoins} tabcoin(s)"
-        binding.postAuthor.text = " · ${posts[position].ownerUsername}"
-        binding.postComments.text = " · ${posts[position].commentsAmount} comentário(s)"
+        val post = posts[position]
+        binding.position.text = "${position + 1}."
+        binding.postTitle.text = post.title
+        binding.tabcoins.text =
+            "${post.tabcoins} ${if (post.tabcoins > 1) "tabcoins" else "tabcoin"}"
+        binding.username.text = " · ${post.username}"
+        binding.comments.text =
+            " · ${post.commentsAmount} ${if (post.commentsAmount > 1) "comentários" else "comentário"}"
     }
 
     override fun getItemCount(): Int = posts.size
