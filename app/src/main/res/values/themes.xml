@@ -1,8 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.TabNewsMobile" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="top_bar_logo">@drawable/dark_outlined</item>
     </style>
 
     <style name="Theme.TabNewsMobile" parent="Base.Theme.TabNewsMobile" />
