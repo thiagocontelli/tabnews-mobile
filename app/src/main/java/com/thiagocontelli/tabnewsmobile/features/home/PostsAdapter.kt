@@ -9,6 +9,7 @@ import com.thiagocontelli.tabnewsmobile.models.Post
 
 class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
     private var posts: List<Post> = emptyList()
+    lateinit var onClick: (Post) -> Unit
 
     fun setPosts(posts: List<Post>) {
         this.posts += posts
@@ -36,6 +37,10 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
         binding.username.text = " · ${post.username}"
         binding.comments.text =
             " · ${post.commentsAmount} ${if (post.commentsAmount > 1) "comentários" else "comentário"}"
+
+        binding.container.setOnClickListener {
+            onClick.invoke(post)
+        }
     }
 
     override fun getItemCount(): Int = posts.size

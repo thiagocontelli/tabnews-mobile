@@ -5,5 +5,6 @@ data class Post(
     val title: String,
     val tabcoins: Int,
     val username: String,
-    val commentsAmount: Int
+    val commentsAmount: Int,
+    val slug: String
 )

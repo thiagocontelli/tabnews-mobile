@@ -23,6 +23,7 @@ fun GetContentsDtoItem.toModel(): Post {
         title = this.title,
         tabcoins = this.tabcoins,
         commentsAmount = this.children_deep_count,
-        username = this.owner_username
+        username = this.owner_username,
+        slug = this.slug
     )
 }

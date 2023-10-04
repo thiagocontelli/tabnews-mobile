@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.thiagocontelli.tabnewsmobile.R
 import com.thiagocontelli.tabnewsmobile.databinding.FragmentPostsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,6 +40,7 @@ class PostsFragment(private val strategy: String) : Fragment() {
         preparePostsRecyclerView()
         getPosts()
         onReachLastElement()
+        onPostClick()
     }
 
     override fun onDestroyView() {
@@ -48,6 +52,17 @@ class PostsFragment(private val strategy: String) : Fragment() {
         binding.postsRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             adapter = postsAdapter
+        }
+    }
+
+    private fun onPostClick() {
+        postsAdapter.onClick = { post ->
+            val bundle = bundleOf(
+                "username" to post.username,
+                "slug" to post.slug
+            )
+
+            findNavController().navigate(R.id.action_homeFragment_to_postFragment, bundle)
         }
     }
 
