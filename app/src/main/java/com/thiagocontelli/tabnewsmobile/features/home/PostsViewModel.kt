@@ -13,14 +13,18 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class RelevantsViewModel @Inject constructor(private val api: TabNewsApi) : ViewModel() {
+class PostsViewModel @Inject constructor(private val api: TabNewsApi) : ViewModel() {
     private var _state = MutableStateFlow(State())
-    private val state: StateFlow<State> = _state
+    val state: StateFlow<State> = _state
 
-    fun getPosts(): Flow<Result<List<Post>>> = flow {
+    fun getPosts(strategy: String): Flow<Result<List<Post>>> = flow {
         try {
-            val dto = api.getContents(page = state.value.nextPage)
+            val dto = api.getContents(page = state.value.nextPage, strategy = strategy)
             val posts = dto.map { it.toModel() }
+            if (posts.isEmpty()) {
+                _state.update { it.copy(reachTheEnd = true) }
+                return@flow
+            }
             _state.update { it.copy(nextPage = it.nextPage + 1) }
             emit(Result.success(posts))
         } catch (e: Exception) {

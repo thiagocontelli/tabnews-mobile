@@ -10,16 +10,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.thiagocontelli.tabnewsmobile.databinding.FragmentRelevantsBinding
+import com.thiagocontelli.tabnewsmobile.databinding.FragmentPostsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RelevantsFragment : Fragment() {
-    private var _binding: FragmentRelevantsBinding? = null
+class PostsFragment(private val strategy: String) : Fragment() {
+    private var _binding: FragmentPostsBinding? = null
     private val binding get() = _binding!!
     private lateinit var postsAdapter: PostsAdapter
-    private val viewModel: RelevantsViewModel by viewModels()
+    private val viewModel: PostsViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postsAdapter = PostsAdapter()
@@ -28,7 +28,7 @@ class RelevantsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRelevantsBinding.inflate(inflater, container, false)
+        _binding = FragmentPostsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -53,7 +53,7 @@ class RelevantsFragment : Fragment() {
 
     private fun getPosts() {
         lifecycleScope.launch {
-            viewModel.getPosts().collect { result ->
+            viewModel.getPosts(strategy = strategy).collect { result ->
                 result.onSuccess { posts ->
                     postsAdapter.setPosts(posts)
                 }
@@ -69,6 +69,7 @@ class RelevantsFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
                 if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == linearLayoutManager.itemCount - 1) {
+                    if (viewModel.state.value.reachTheEnd) return
                     getPosts()
                 }
                 super.onScrolled(recyclerView, dx, dy)

@@ -12,9 +12,9 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> RelevantsFragment()
-            1 -> RecentsFragment()
-            else -> RelevantsFragment()
+            0 -> PostsFragment("relevant")
+            1 -> PostsFragment("new")
+            else -> PostsFragment("relevant")
         }
     }
 }
