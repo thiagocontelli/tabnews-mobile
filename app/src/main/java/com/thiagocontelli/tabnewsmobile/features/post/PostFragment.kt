@@ -11,15 +11,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.thiagocontelli.tabnewsmobile.databinding.FragmentPostBinding
 import dagger.hilt.android.AndroidEntryPoint
+import io.noties.markwon.Markwon
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
     private var _binding: FragmentPostBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PostViewModel by viewModels()
+
+    @Inject
+    lateinit var markwon: Markwon
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -44,8 +49,9 @@ class PostFragment : Fragment() {
                     binding.tvTitle.text = post.title
                     binding.chipUsername.text = post.owner_username
                     binding.tvPublishedAt.text = formatted
-                    binding.tvBody.text = post.body
                     binding.tvTabcoins.text = post.tabcoins.toString()
+
+                    markwon.setMarkdown(binding.tvBody, post.body)
                 }
                 result.onFailure {
                     Toast.makeText(activity, "Houve um erro!", Toast.LENGTH_LONG).show()
