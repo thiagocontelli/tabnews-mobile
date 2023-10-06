@@ -33,6 +33,8 @@ class PostFragment : Fragment() {
         val user = arguments?.getString("username") ?: ""
         val slug = arguments?.getString("slug") ?: ""
         lifecycleScope.launch {
+            binding.progress.visibility = View.VISIBLE
+            binding.scrollView.visibility = View.GONE
             viewModel.getPostContent(user, slug).collect { result ->
                 result.onSuccess { post ->
                     val formatted =
@@ -49,6 +51,8 @@ class PostFragment : Fragment() {
                     Toast.makeText(activity, "Houve um erro!", Toast.LENGTH_LONG).show()
                 }
             }
+            binding.progress.visibility = View.GONE
+            binding.scrollView.visibility = View.VISIBLE
         }
         binding.postToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
