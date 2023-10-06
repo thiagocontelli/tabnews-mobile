@@ -43,6 +43,7 @@ class PostFragment : Fragment() {
                     binding.chipUsername.text = post.owner_username
                     binding.tvPublishedAt.text = formatted
                     binding.tvBody.text = post.body
+                    binding.tvTabcoins.text = post.tabcoins.toString()
                 }
                 result.onFailure {
                     Toast.makeText(activity, "Houve um erro!", Toast.LENGTH_LONG).show()
