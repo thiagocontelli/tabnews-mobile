@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PostsFragment(private val strategy: String) : Fragment() {
+class PostsFragment(private val strategy: String = "relevant") : Fragment() {
     private var _binding: FragmentPostsBinding? = null
     private val binding get() = _binding!!
     private lateinit var postsAdapter: PostsAdapter
