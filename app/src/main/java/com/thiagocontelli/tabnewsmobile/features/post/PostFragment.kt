@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.thiagocontelli.tabnewsmobile.data.dtos.GetPostContentDto
 import com.thiagocontelli.tabnewsmobile.databinding.FragmentPostBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.noties.markwon.Markwon
@@ -35,38 +36,60 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        onNavigationClick()
+
         val user = arguments?.getString("username") ?: ""
         val slug = arguments?.getString("slug") ?: ""
+
         lifecycleScope.launch {
-            binding.progress.visibility = View.VISIBLE
-            binding.scrollView.visibility = View.GONE
+            showLoading(true)
+
             viewModel.getPostContent(user, slug).collect { result ->
-                result.onSuccess { post ->
-                    val formatted =
-                        LocalDateTime.parse(post.published_at, DateTimeFormatter.ISO_DATE_TIME)
-                            .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-
-                    binding.tvTitle.text = post.title
-                    binding.chipUsername.text = post.owner_username
-                    binding.tvPublishedAt.text = formatted
-                    binding.tvTabcoins.text = post.tabcoins.toString()
-
-                    markwon.setMarkdown(binding.tvBody, post.body)
-                }
-                result.onFailure {
-                    Toast.makeText(activity, "Houve um erro!", Toast.LENGTH_LONG).show()
-                }
+                result.onSuccess { post -> onSuccess(post) }
+                result.onFailure { onFailure() }
             }
-            binding.progress.visibility = View.GONE
-            binding.scrollView.visibility = View.VISIBLE
-        }
-        binding.postToolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+
+            showLoading(false)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun showLoading(showLoading: Boolean) {
+        binding.progress.visibility =
+            if (showLoading) View.VISIBLE else View.GONE
+
+        binding.scrollView.visibility =
+            if (showLoading) View.GONE else View.VISIBLE
+    }
+
+    private fun formatDate(date: String): String {
+        return LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+            .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+    }
+
+    private fun onNavigationClick() {
+        binding.postToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun onSuccess(post: GetPostContentDto) {
+        val formatted = formatDate(post.published_at)
+
+        binding.tvTitle.text = post.title
+        binding.chipUsername.text = post.owner_username
+        binding.tvPublishedAt.text = formatted
+        binding.tvTabcoins.text = post.tabcoins.toString()
+
+        markwon.setMarkdown(binding.tvBody, post.body)
+    }
+
+    private fun onFailure() {
+        Toast.makeText(activity, "Houve um erro!", Toast.LENGTH_LONG).show()
     }
 }
