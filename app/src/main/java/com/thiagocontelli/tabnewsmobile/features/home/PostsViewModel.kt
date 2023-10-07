@@ -31,4 +31,15 @@ class PostsViewModel @Inject constructor(private val api: TabNewsApi) : ViewMode
             emit(Result.failure(e))
         }
     }
+
+    fun refreshPosts(strategy: String): Flow<Result<List<Post>>> = flow {
+        try {
+            val dto = api.getContents(strategy = strategy)
+            val posts = dto.map { it.toModel() }
+            _state.update { it.copy(nextPage = 2, reachTheEnd = false) }
+            emit(Result.success(posts))
+        } catch (e: Exception) {
+            emit(Result.failure(e))
+        }
+    }
 }

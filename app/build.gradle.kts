@@ -68,6 +68,9 @@ dependencies {
     implementation("io.noties.markwon:ext-tasklist:$markwonVersion")
     implementation("io.noties.markwon:image-glide:$markwonVersion")
     implementation("io.noties.markwon:linkify:$markwonVersion")
+
+    // swipe refresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 }
 
 kapt {

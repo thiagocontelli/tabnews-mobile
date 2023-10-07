@@ -41,6 +41,18 @@ class PostsFragment(private val strategy: String = "relevant") : Fragment() {
         getPosts()
         onReachLastElement()
         onPostClick()
+
+        binding.swiperefresh.setOnRefreshListener {
+            lifecycleScope.launch {
+                viewModel.refreshPosts(strategy = strategy).collect { result ->
+                    result.onSuccess { posts ->
+                        postsAdapter.setPosts(posts, true)
+                        binding.swiperefresh.isRefreshing = false
+                    }
+                    result.onFailure { toastError() }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -58,8 +70,7 @@ class PostsFragment(private val strategy: String = "relevant") : Fragment() {
     private fun onPostClick() {
         postsAdapter.onClick = { post ->
             val bundle = bundleOf(
-                "username" to post.username,
-                "slug" to post.slug
+                "username" to post.username, "slug" to post.slug
             )
 
             findNavController().navigate(R.id.action_homeFragment_to_postFragment, bundle)
@@ -72,9 +83,7 @@ class PostsFragment(private val strategy: String = "relevant") : Fragment() {
                 result.onSuccess { posts ->
                     postsAdapter.setPosts(posts)
                 }
-                result.onFailure {
-                    Toast.makeText(activity, "Houve um erro!", Toast.LENGTH_LONG).show()
-                }
+                result.onFailure { toastError() }
             }
         }
     }
@@ -90,5 +99,9 @@ class PostsFragment(private val strategy: String = "relevant") : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
+    }
+
+    private fun toastError() {
+        Toast.makeText(activity, "Houve um erro!", Toast.LENGTH_LONG).show()
     }
 }

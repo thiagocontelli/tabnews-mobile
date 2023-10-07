@@ -11,8 +11,12 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
     private var posts: List<Post> = emptyList()
     lateinit var onClick: (Post) -> Unit
 
-    fun setPosts(posts: List<Post>) {
-        this.posts += posts
+    fun setPosts(posts: List<Post>, refresh: Boolean = false) {
+        if (refresh) {
+            this.posts = posts
+        } else {
+            this.posts += posts
+        }
         notifyDataSetChanged()
     }
 
