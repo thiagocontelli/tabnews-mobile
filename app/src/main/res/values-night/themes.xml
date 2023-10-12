@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.TabNewsMobile" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="top_bar_logo">@drawable/light_outlined</item>
-        <item name="colorPrimary">#277AE1</item>
+        <item name="colorPrimary">#69ACFF</item>
         <item name="navigationIconTint">@color/white</item>
     </style>
 </resources>
